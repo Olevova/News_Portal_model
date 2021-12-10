@@ -1,0 +1,77 @@
+
+_____создание 2-х пользователей_____
+User.objects.create_user('Nikolay')
+User.objects.create_user('Svetlana')
+
+________создание 2-е модели Author__________________
+Author.objects.create(user = User.objects.get(pk=3))
+Author.objects.create(user = User.objects.get(pk=4))
+
+
+________создание 4-ох категорий__________
+Category.objects.create(name = 'politik')
+Category.objects.create(name = 'sport')
+Category.objects.create(name = 'cinema')
+Category.objects.create(name = 'style')
+
+__________________добавляем 2 статьи и 1 новость___________________________________________________________________________________________
+Post.objects.create(title = 'Game of Thrones', content = 'NW', text = 'some about The Game of Thrones',author = Author.objects.get(pk = 1))
+Post.objects.create(title = 'Football', content = 'AR', text = 'Ukraine - France', author = Author.objects.get(pk = 2))
+Post.objects.create(title = 'Basketball', content = 'AR', text = 'USA - Canada', author = Author.objects.get(pk = 2))
+
+____________________________Присваиваем имя категории_______________________
+Post.objects.get(pk=2).category.add(Category.objects.filter(name = 'cinema')
+Post.objects.get(pk=2).category.add(Category.objects.filter(name = 'style')
+Post.objects.get(pk=3).category.add(Category.objects.filter(name = 'sport')
+Post.objects.get(pk=4).category.add(Category.objects.filter(name = 'sport')
+
+
+______________________________Делаем коментарии______________________________
+Comment.objects.create(post = Post.objects.get(pk=2), user = Author.objects.get(pk=1).user, text = 'cool')
+Comment.objects.create(post = Post.objects.get(pk=3), user = Author.objects.get(pk=2).user, text = 'amazing')
+Comment.objects.create(post = Post.objects.get(pk=3), user = Author.objects.get(pk=1).user, text = 'not sure')
+Comment.objects.create(post = Post.objects.get(pk=2), user = Author.objects.get(pk=1).user, text = 'not sure')
+
+_Применяем функции like() и dislike()_
+p1 = Post.objects.get(pk = 2)
+p1.like()
+1
+p1.like()
+2
+p1.like()
+3
+p1.dislike()
+2
+c1 = Comment.objects.get(pk = 2)
+c1.like()
+1
+c1.dislike()
+0
+_______Обновляем рейтинги пользователей____
+u2 = Author.objects.get(pk=1)
+u2.update_rating()
+13
+
+____Выводим username и рейтинг лучшего пользователя____
+r = Author.objects.order_by('_rate')[:1]
+for i in r:
+	print(i.user.username)
+Bob
+
+___Выводим автора, рейтин, заголовок, привью лучшей статьи______
+t = Post.objects.order_by('-rate')[:1]
+for i in t:
+	print(i.title, i.preview(), i.rate, i.author.user.username)
+Game of Thrones some about The Game of Thrones... 3.0 Bob
+
+_____Выводим все к этой статье________________________________________
+t = Post.objects.order_by('-rate')[:1]
+for i in t:
+	K=i
+k.postCom.values()
+QuerySet [{'id': 2, 'text': 'cool', 'create': datetime.datetime(2021, 12, 9, 18, 55, 57, 6466, tzinfo=datetime.timezone.utc), '_rate': 1.0, 'post_id': 2, 'user_id': 1}, {'id': 5, 'text':
+ 'not sure', 'create': datetime.datetime(2021, 12, 9, 19, 6, 33, 873182, tzinfo=datetime.timezone.utc), '_rate': 0.0, 'post_id': 2, 'user_id': 1}]
+
+
+
+
