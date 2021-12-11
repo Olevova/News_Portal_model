@@ -7,9 +7,12 @@ class Author(models.Model):
     _rate = models.IntegerField(default=0, db_column='rate')
 
     def update_rating(self):# функция сделана двумя способами, через фор и так как показано в разборе проекта
-        postRat = self.author.aggregate(postRating=Sum('rate'))
-        pRat = 0
-        pRat += postRat.get('postRating')
+        if self.author.all():
+            postRat = self.author.aggregate(postRating=Sum('rate'))
+            pRat = 0
+            pRat += postRat.get('postRating')
+        else:
+            pRat = 0
         self._rate = pRat
         comRat = 0
         for i in self.user.userCom.all():
@@ -44,6 +47,9 @@ class Post(models.Model):
 
     def preview(self):
         return f'{self.text[:123]}...'
+
+    def __str__(self):
+        return self.title
 
 
 class PostCategory(models.Model):
